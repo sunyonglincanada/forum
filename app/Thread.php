@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\ThreadFilters;
+use Illuminate\Database\Eloquent\Builder;
 
 class Thread extends Model
 {
@@ -31,5 +33,16 @@ class Thread extends Model
     public function addReply( $reply )
     {
         $this->replies()->create($reply);
+    }
+
+    /**
+     * Apply all relevant thread filters
+     * @param $query
+     * @param $filters
+     * @return Builder
+     */
+    public function scopeFilter($query, ThreadFilters $filters)
+    {
+        return $filters->apply($query);
     }
 }
