@@ -8,7 +8,24 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Thread extends Model
 {
+    /**
+     * Don't auto-apply mass assignment protection.
+     *
+     * @var array
+     */
     protected $guarded = [];
+
+    /**
+     * Boot the model
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function($builder){
+            $builder->withCount('replies');
+        });
+    }
 
     public function path()
     {
