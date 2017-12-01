@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\ThreadFilters;
+use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Builder;
 
 class Thread extends Model

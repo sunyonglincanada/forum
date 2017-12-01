@@ -26,6 +26,10 @@ class ThreadsController extends Controller
     {
         $threads = $this->getThreads($channel, $filters);
 
+        if(request()->wantsJson()){
+            return $threads;
+        }
+
         return view('threads.index', compact('threads'));
     }
 
@@ -116,23 +120,18 @@ class ThreadsController extends Controller
 
     /**
      * @param Channel $channel
+     * @param ThreadFilters $filters
      * @return \Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|static
      */
-    protected function getThreads(Channel $channel)
+    protected function getThreads(Channel $channel, ThreadFilters $filters)
     {
+
+        $threads = Thread::latest()->filter($filters);
+
         if ($channel->exists) {
-
-            $threads = $channel->threads()->latest();
-        } else {
-            $threads = Thread::latest();
+            $threads->where('channel_id', $channel->id);
         }
 
-        // if request('by') we should filter by the given username.
-        if ($username = request('by')) {
-            $user = \App\User::where('name', $username)->firstOrFail();
-
-            $threads->where('user_id', $user->id);
-        }
 
         $threads = $threads->get();
         return $threads;
