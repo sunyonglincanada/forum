@@ -15,6 +15,7 @@ class Thread extends Model
      */
     protected $guarded = [];
 
+    protected $with = ['creator', 'channel'];
     /**
      * Boot the model
      */
@@ -24,6 +25,10 @@ class Thread extends Model
 
         static::addGlobalScope('replyCount', function($builder){
             $builder->withCount('replies');
+        });
+
+        static::addGlobalScope('creator', function($builder){
+            $builder->withCount('creator');
         });
     }
 
