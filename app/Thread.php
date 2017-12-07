@@ -15,7 +15,14 @@ class Thread extends Model
      */
     protected $guarded = [];
 
+
+    /**
+     * The relationships to always eager-load
+     * @var array
+     */
     protected $with = ['creator', 'channel'];
+
+
     /**
      * Boot the model
      */
@@ -25,6 +32,10 @@ class Thread extends Model
 
         static::addGlobalScope('replyCount', function($builder){
             $builder->withCount('replies');
+        });
+
+        static::deleting(function($thread){
+            $thread->repliesWithoutFav()->delete();
         });
 
         static::addGlobalScope('creator', function($builder){
@@ -40,6 +51,11 @@ class Thread extends Model
     public function replies()
     {
         return $this->hasMany(Reply::class)->withCount('favorites');
+    }
+
+    public function repliesWithoutFav()
+    {
+        return $this->hasMany(Reply::class);
     }
 
     public function creator()

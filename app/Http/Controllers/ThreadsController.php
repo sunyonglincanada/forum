@@ -71,11 +71,11 @@ class ThreadsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  $channelId
+     * @param  $channel
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($channelId, Thread $thread)
+    public function show($channel, Thread $thread)
     {
 
         return view('threads.show', [
@@ -108,17 +108,27 @@ class ThreadsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * delete thread
      *
+     * @param  Channel  $channel
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy($channel, Thread $thread)
     {
-        //
+//        dd($channel, 123, $thread);
+        $thread->delete();
+
+        if( request()->wantsJson()){
+            return response([],204);
+        }
+
+        return redirect('/threads');
     }
 
     /**
+     * Fetch all relevant threads
+     *
      * @param Channel $channel
      * @param ThreadFilters $filters
      * @return \Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|static
