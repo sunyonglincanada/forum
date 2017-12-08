@@ -12,7 +12,7 @@
                                 {{ $thread->title }}
                             </span>
 
-                            @if (Auth::check())
+                            @if($thread->user_id == auth()->id())
                                 <form action="{{ $thread->path() }}" method="POST">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
