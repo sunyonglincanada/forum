@@ -35,7 +35,7 @@ class Thread extends Model
         });
 
         static::deleting(function($thread){
-            $thread->repliesWithoutFav()->delete();
+            $thread->replies()->delete();
         });
 
         static::addGlobalScope('creator', function($builder){
@@ -48,15 +48,12 @@ class Thread extends Model
         return "/threads/{$this->channel->slug}/{$this->id}";
     }
 
+    // [Eric] bug fix: General error: 25 bind or column index out of range due to withCount('favorites')
     public function replies()
-    {
-        return $this->hasMany(Reply::class)->withCount('favorites');
-    }
-
-    public function repliesWithoutFav()
     {
         return $this->hasMany(Reply::class);
     }
+
 
     public function creator()
     {

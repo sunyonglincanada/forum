@@ -116,7 +116,7 @@ class ThreadsController extends Controller
      */
     public function destroy($channel, Thread $thread)
     {
-//        dd($channel, 123, $thread);
+
         $thread->delete();
 
         if( request()->wantsJson()){
@@ -136,7 +136,7 @@ class ThreadsController extends Controller
     protected function getThreads(Channel $channel, ThreadFilters $filters)
     {
 
-        $threads = Thread::with('channel')->latest()->filter($filters);
+        $threads = Thread::latest()->filter($filters);
 
         if ($channel->exists) {
             $threads->where('channel_id', $channel->id);
