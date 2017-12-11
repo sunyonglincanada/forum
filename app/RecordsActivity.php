@@ -18,6 +18,11 @@ trait RecordsActivity
                 $model->recordActivity($event);
             });
         }
+
+        // [Eric] bug fix: when deleting a thread and an error occur in user profile page (Call to a member function                 path() on null (View: /home/vagrant/Code/forum/resources/views/profiles/activities/created_thread                         .blade.php) )
+        static::deleting(function ($model) {
+            $model->activity()->delete();
+        });
     }
 
     /**
