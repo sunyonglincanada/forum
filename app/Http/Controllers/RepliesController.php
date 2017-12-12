@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Reply;
 use Illuminate\Http\Request;
 use App\Thread;
 
@@ -32,5 +33,23 @@ class RepliesController extends Controller
         ]);
 
         return back()->with('flash', 'Your reply has been left. ');
+    }
+
+    /**
+     * Delete the given reply
+     *
+     * @param Reply $reply
+     * @return \Illuminate\Http\RedirectResponse
+     *
+     * @author Eric
+     * @date 2017-12-12
+     */
+    public function destroy(Reply $reply)
+    {
+        $this->authorize('update', $reply);
+
+        $reply->delete();
+
+        return back();
     }
 }

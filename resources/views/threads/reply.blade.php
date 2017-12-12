@@ -23,4 +23,17 @@
     <div class="panel-body">
         {{ $reply->body }}
     </div>
+    <!-- authenticated user can delete replies -->
+    @can ('update', $reply)
+        <div class="panel-footer">
+            <form method="POST" action="/replies/{{ $reply->id }}">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
+
+                <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+
+            </form>
+        </div>
+    @endcan
+
 </div>
