@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default" id="reply-{{ $reply->id }}">
     <div class="panel-heading">
         <div class="level">
             <h5 class="flex">

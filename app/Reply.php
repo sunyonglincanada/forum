@@ -37,5 +37,17 @@ class Reply extends Model
         return $this->belongsTo(Thread::class);
     }
 
+    /**
+     * Determine the path to the reply
+     * @return string
+     *
+     * @author Eric
+     * @date 2017-12-12
+     */
+    public function path()
+    {
+        return $this->thread->path() . "#reply-{$this->id}";
+    }
+
 
 }
