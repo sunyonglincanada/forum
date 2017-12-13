@@ -67,6 +67,11 @@ class RepliesController extends Controller
 
         $reply->delete();
 
+        // Ajaxify reply delete
+        if(request()->expectsJson()){
+            return response(['status' => 'Reply Deleted']);
+        }
+
         return back();
     }
 }
