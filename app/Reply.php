@@ -14,6 +14,12 @@ class Reply extends Model
     protected $with = ['owner','favorites'];
 
     /**
+     * The accessors to append to the model's array form
+     * @var array
+     */
+    protected $appends = ['favoritesCount', 'isFavorited'];
+
+    /**
      * A reply belongs to an owner
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      *

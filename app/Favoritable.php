@@ -32,9 +32,22 @@ trait Favoritable
     {
         $attributes = ['user_id' => auth()->id()];
 
-        if (!$this->favorites()->where($attributes)->exists()) {
+        if (! $this->favorites()->where($attributes)->exists()) {
             return $this->favorites()->create($attributes);
         }
+    }
+
+    /**
+     * Unfavorite the current reply
+     *
+     * @author Eric
+     * @date 2017-12-13
+     */
+    public function unfavorite()
+    {
+        $attributes = ['user_id' => auth()->id()];
+
+        $this->favorites()->where($attributes)->get()->each->delete();
     }
 
     /**
@@ -43,10 +56,29 @@ trait Favoritable
      */
     public function isFavorited()
     {
-        return !!$this->favorites->where('user_id', auth()->id())->count();
+        return ! !$this->favorites->where('user_id', auth()->id())->count();
     }
 
-    public function getFavoriteCountAttribute()
+    /**
+     * Check whether the reply is favorited or not
+     * @return bool
+     *
+     * @author Eric
+     * @date 2017-12-13
+     */
+    public function getIsFavoritedAttribute()
+    {
+        return $this->isFavorited();
+    }
+
+    /**
+     * Get the number of favorites for the reply
+     * @return integer
+     *
+     * @author Eric
+     * @date 2017-12-09
+     */
+    public function getFavoritesCountAttribute()
     {
         return $this->favorites->count();
     }
