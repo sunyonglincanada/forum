@@ -11,8 +11,23 @@ class RepliesController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'index']);
     }
+
+    /**
+     * Get all relevant replies
+     * @param $channelId
+     * @param Thread $thread
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     *
+     * @author Eric
+     * @date 2017-12-15
+     */
+    public function index( $channelId, Thread $thread)
+    {
+        return $thread->replies()->paginate(20);
+    }
+
 
     /**
      * Persist a new reply
