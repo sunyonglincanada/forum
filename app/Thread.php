@@ -24,6 +24,12 @@ class Thread extends Model
      */
     protected $with = ['creator', 'channel'];
 
+    /**
+     * The accessors to append to the model's array form
+     *
+     * @var array
+     */
+    protected $appends = ['isSubscribedTo'];
 
     /**
      * Boot the Thread instance
@@ -82,5 +88,60 @@ class Thread extends Model
     public function scopeFilter($query, ThreadFilters $filters)
     {
         return $filters->apply($query);
+    }
+
+    /**
+     * Subscribe a user from the current thread
+     * @param null|int $userId
+     *
+     * @author Eric
+     * @date 2017-12-15
+     */
+    public function subscribe($userId = null)
+    {
+        $this->subscriptions()->create([
+            'user_id'   => $userId ?: auth()->id()
+        ]);
+    }
+
+    /**
+     * Unsubscribe a user from the current thread
+     * @param null|int $userId
+     *
+     * @author Eric
+     * @date 2017-12-15
+     */
+    public function unsubscribe($userId = null)
+    {
+        $this->subscriptions()
+            ->where('user_id',$userId ?: auth()->id())
+            ->delete();
+    }
+
+    /**
+     * A thread can have many subscriptions
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     *
+     * @author Eric
+     * @date 2017-12-15
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany(ThreadSubscription::class);
+    }
+
+    /**
+     * Check the current user is subscribed to the current thread
+     *
+     * @return bool
+     *
+     * @author Eric
+     * @date 2017-12-15
+     */
+    public function getIsSubscribedToAttribute()
+    {
+        return $this->subscriptions()
+                    ->where('user_id', auth()->id())
+                    ->exists();
     }
 }
