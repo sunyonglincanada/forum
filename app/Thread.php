@@ -26,15 +26,11 @@ class Thread extends Model
 
 
     /**
-     * Boot the model
+     * Boot the Thread instance
      */
     protected static function boot()
     {
         parent::boot();
-
-        static::addGlobalScope('replyCount', function($builder){
-            $builder->withCount('replies');
-        });
 
         static::deleting(function($thread){
             $thread->replies->each->delete();
@@ -70,7 +66,7 @@ class Thread extends Model
     /**
      * Add a reply to a thread
      * @param $reply
-     * @return Reply
+     * @return Model
      */
     public function addReply( $reply )
     {

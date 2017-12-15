@@ -13,7 +13,7 @@ class ThreadFilters extends Filters
      *
      * @var array
      */
-    protected $filters = ['by', 'popular'];
+    protected $filters = ['by', 'popular', 'unanswered'];
 
 
     /**
@@ -40,4 +40,18 @@ class ThreadFilters extends Filters
 
         return $this->builder->orderBy('replies_count', 'desc');
 
-    }}
+    }
+
+
+    /**
+     * Filter the query/threads those are unanswered
+     * @return $this
+     *
+     * @author Eric
+     * @date 2017-12-15
+     */
+    protected function unanswered()
+    {
+        return $this->builder->where('replies_count', 0);
+    }
+}
