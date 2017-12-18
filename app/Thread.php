@@ -79,6 +79,21 @@ class Thread extends Model
         $reply = $this->replies()->create($reply);
 
         // Prepare notifications for all subscribers.
+        $this->notifySubscribers($reply);
+
+    }
+
+    /**
+     * Notify all thread subscribers about a new reply
+     * @param $reply
+     * @return mixed
+     *
+     * @author Eric
+     * @date 2017-12-17
+     */
+    public function notifySubscribers($reply)
+    {
+
         $this->subscriptions
             ->where('user_id', '!=', $reply->user_id)
             ->each
