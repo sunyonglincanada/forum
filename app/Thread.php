@@ -71,7 +71,7 @@ class Thread extends Model
 
     /**
      * Add a reply to a thread
-     * @param $reply
+     * @param \App\Reply $reply
      * @return Model
      */
     public function addReply( $reply )
@@ -168,5 +168,21 @@ class Thread extends Model
         return $this->subscriptions()
                     ->where('user_id', auth()->id())
                     ->exists();
+    }
+
+    /**
+     * Determine if the thread has been updated since the user last read it.
+     *
+     * @param User $user
+     * @return bool
+     *
+     * @author Eric
+     * @date 2017-12-18
+     */
+    public function hasUpdatesFor($user)
+    {
+        $key = $user->visitedThreadCacheKey($this);
+
+        return $this->updated_at > cache($key);
     }
 }
