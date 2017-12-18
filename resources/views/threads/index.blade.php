@@ -10,7 +10,7 @@
                             <div class="level">
                                 <h4 class="flex">
                                     <a href="{{ $thread->path() }}">
-
+                                        <!--[Eric] bug fix: we should do auth()->check() first, then get auth()->user(), otherwise, auth()->user() returns null and unit test will fail. -->
                                         @if ( (auth()->check()) AND ( $thread->hasUpdatesFor(auth()->user())))
                                             <strong>
                                                 {{ $thread->title }}
