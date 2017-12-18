@@ -71,7 +71,7 @@ class Thread extends Model
 
     /**
      * Add a reply to a thread
-     * @param \App\Reply $reply
+     * @param array $reply
      * @return Model
      */
     public function addReply( $reply )
