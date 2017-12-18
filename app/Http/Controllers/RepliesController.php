@@ -35,16 +35,12 @@ class RepliesController extends Controller
      *
      * @param $channelId
      * @param Thread $thread
-     * @param Spam $spam
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Http\RedirectResponse
      */
-    public function store($channelId, Thread $thread, Spam $spam)
+    public function store($channelId, Thread $thread)
     {
-        $this->validate(request(), [
-            'body'       => 'required'
-        ]);
+        $this->validateReply();
 
-        $spam->detect(request('body'));
 
         $reply = $thread->addReply([
             'body' => request('body'),
@@ -69,7 +65,7 @@ class RepliesController extends Controller
     {
         $this->authorize('update', $reply);
 
-        $this->validate(request(), ['body' => 'required']);
+        $this->validateReply();
 
         $reply->update(request(['body']));
     }
@@ -96,5 +92,18 @@ class RepliesController extends Controller
         }
 
         return back();
+    }
+
+    /**
+     * Validate the reply for spam detection
+     *
+     * @author Eric
+     * @date 2017-12-18
+     */
+    protected function validateReply()
+    {
+        $this->validate(request(), ['body' => 'required']);
+
+        resolve(Spam::class)->detect(request('body'));
     }
 }
