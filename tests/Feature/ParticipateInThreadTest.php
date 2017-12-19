@@ -14,13 +14,13 @@ class ParticipateInThreadTest extends TestCase
     function unauthenticated_users_may_not_add_replies()
     {
         $this->withExceptionHandling()
-             ->post('/threads/some-channel/1/replies', [])
-             ->assertRedirect('/login');
+            ->post('/threads/some-channel/1/replies', [])
+            ->assertRedirect('/login');
     }
 
 
     /** @test */
-    function an_authenticated_user_may_participated_in_forum_threads()
+    function an_authenticated_user_may_participate_in_forum_threads()
     {
 
         $this->signIn();
@@ -31,11 +31,12 @@ class ParticipateInThreadTest extends TestCase
 
         //when the user adds a reply to the thread
         $reply = make('App\Reply');
-        $this->post($thread->path().'/replies', $reply->toArray());
+
+        $this->post($thread->path() . '/replies', $reply->toArray());
 
         //Then their reply should be visible on the page
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
-        $this->assertEquals(1,$thread->fresh()->replies_count);
+        $this->assertEquals(1, $thread->fresh()->replies_count);
     }
 
     /** @test */
@@ -59,12 +60,11 @@ class ParticipateInThreadTest extends TestCase
         $reply = create('App\Reply');
 
         $this->delete("/replies/{$reply->id}")
-             ->assertRedirect('login');
+            ->assertRedirect('login');
 
         $this->signIn()
-             ->delete("/replies/{$reply->id}")
-             ->assertStatus(403);
-
+            ->delete("/replies/{$reply->id}")
+            ->assertStatus(403);
     }
 
     /** @test */
@@ -76,11 +76,10 @@ class ParticipateInThreadTest extends TestCase
 
         $this->delete("/replies/{$reply->id}")->assertStatus(302);
 
-        $this->assertDatabaseMissing('replies', ['id' => $reply->id ]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
 
         $this->assertEquals(0, $reply->thread->fresh()->replies_count);
     }
-
 
     /** @test */
     function unauthorized_users_cannot_update_replies()
@@ -116,13 +115,29 @@ class ParticipateInThreadTest extends TestCase
         $this->signIn();
 
         $thread = create('App\Thread');
-
         $reply = make('App\Reply', [
-                 'body' => 'Yahoo Customer Support'
+            'body' => 'Yahoo Customer Support'
         ]);
 
-        $this->expectException(\Exception::class);
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
+    }
 
-        $this->post($thread->path() . '/replies', $reply->toArray());
+    /** @test */
+    function users_may_only_reply_a_maximum_of_once_per_minute()
+    {
+
+        $this->withExceptionHandling();
+
+        $this->signIn();
+
+        $thread = create('App\Thread');
+        $reply = make('App\Reply');
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(200);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(429);
     }
 }

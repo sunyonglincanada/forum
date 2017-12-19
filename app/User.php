@@ -88,4 +88,16 @@ class User extends Authenticatable
 
         return sprintf("users.%s.visits.%s", $this->id, $thread->id);
     }
+
+    /**
+     * Get the latest reply for the user
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
+     * @author Eric
+     * @date 2017-12-19
+     */
+    public function lastReply()
+    {
+        return $this->hasOne(Reply::class)->latest();
+    }
 }
