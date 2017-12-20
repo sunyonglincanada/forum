@@ -86,5 +86,19 @@ class Reply extends Model
         return $this->created_at->gt(Carbon::now()->subMinute());
     }
 
+    /**
+     * Get all mentioned users within the reply's body.
+     * @return array
+     *
+     * @author Eric
+     * @date 2017-12-20
+     */
+    public function mentionedUsers()
+    {
+        preg_match_all('/\@([^\s\.]+)/', $this->body, $matches);
+
+        return $matches[1];
+    }
+
 
 }

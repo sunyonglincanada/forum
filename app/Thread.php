@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Model;
 use App\Filters\ThreadFilters;
 use Illuminate\Database\Eloquent\Builder;
@@ -78,27 +79,10 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($reply);
 
-        $this->notifySubscribers($reply);
+        // notify users that they are mentioned in the reply eventgit
+        event(new ThreadReceivedNewReply($reply));
 
         return $reply;
-    }
-
-    /**
-     * Notify all thread subscribers about a new reply.
-     * @param \App\Reply $reply
-     *
-     * @author Eric
-     * @date 2017-12-18
-     */
-    public function notifySubscribers($reply)
-    {
-        // Prepare notifications for all subscribers
-        $this->subscriptions
-            ->filter(function($sub) use ($reply){
-
-                return $sub->user_id != $reply->user_id;
-            })
-            ->each->notify($reply);
     }
 
     /**
