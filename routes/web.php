@@ -48,3 +48,8 @@ Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
 //User Notifications
 Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
+
+// API
+
+// Username Autocomplete
+Route::get('api/users', 'Api\UsersController@index');

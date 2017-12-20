@@ -20,6 +20,8 @@
     },
 
     "dependencies": {
-        "moment": "^2.18.1"
+        "moment": "^2.18.1",
+        "at.js": "^1.5.3",
+        "jquery.caret": "^0.3.1"
     }
 }

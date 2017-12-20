@@ -24,6 +24,10 @@
 </template>
 
 <script>
+
+    import 'jquery.caret';
+    import 'at.js';
+
     export default {
 
         data() {
@@ -36,6 +40,22 @@
             signedIn() {
                 return window.App.signedIn;
             }
+        },
+
+        mounted() {
+            // username autocomplete
+            $('#body').atwho({
+                at: "@",
+                delay: 750,
+                callbacks: {
+
+                    remoteFilter: function (query, callback){
+                        $.getJSON("/api/users", {name:query}, function(usernames){
+                            callback(usernames)
+                        });
+                    }
+                }
+            });
         },
 
         methods: {

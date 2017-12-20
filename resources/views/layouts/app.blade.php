@@ -30,6 +30,8 @@
         [v-cloak] { display: none; }
     </style>
 
+    <!--username autocomplete style -->
+    @yield('head-autocomplete')
 </head>
 <body>
     <div id="app">
@@ -43,5 +45,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <!--username autocomplete scripts -->
+    @yield('scripts-autocomplete')
 </body>
 </html>
