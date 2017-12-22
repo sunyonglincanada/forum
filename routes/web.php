@@ -53,3 +53,5 @@ Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotification
 
 // Username Autocomplete
 Route::get('api/users', 'Api\UsersController@index');
+// User Avatar
+Route::post('api/users/{user}/avatar', 'Api\UserAvatarController@store')->middleware('auth')->name('avatar');
