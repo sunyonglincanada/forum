@@ -94,7 +94,11 @@ class ThreadsController extends Controller
             auth()->user()->read($thread);
         }
 
+        // Get threads that have been read by user
         $trending->pushThreadToTrending($thread);
+
+        // Get the number read by user
+        $thread->increment('visits');
 
         return view('threads.show', compact('thread'));
     }
