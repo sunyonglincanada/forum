@@ -16,7 +16,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'avatar_path'
+        'name',
+        'email',
+        'password',
+        'avatar_path'
     ];
 
     /**
@@ -25,8 +28,19 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token','email',
+        'password',
+        'remember_token',
+        'email'
     ];
+
+    /**
+     * The attributes that should be cast to native types.
+     * @var array
+     */
+    protected $casts = [
+        'confirmed' => 'boolean'
+    ];
+
 
     /**
      * Get the route key name for Laravel
@@ -112,5 +126,18 @@ class User extends Authenticatable
     public function getAvatarPathAttribute($avatar)
     {
         return asset($avatar ?: 'images/avatars/default-avatar.png');
+    }
+
+    /**
+     * Mark the user's account as confirmed.
+     *
+     * @author Eric
+     * @date 2017-12-27
+     */
+    public function confirm()
+    {
+        $this->confirmed = true;
+
+        $this->save();
     }
 }

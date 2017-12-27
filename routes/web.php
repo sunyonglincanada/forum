@@ -12,6 +12,8 @@
 */
 
 Route::get('/', function () {
+    \Mail::to(App\User::first())->send(new \App\Mail\PleaseConfirmYourEmail());
+
     return view('welcome');
 });
 
@@ -21,10 +23,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Threads
-Route::get('/threads', 'ThreadsController@index');
+Route::get('/threads', 'ThreadsController@index')->name('threads');
 Route::get('threads/create', 'ThreadsController@create');
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@show');
-Route::post('/threads', 'ThreadsController@store');
+Route::post('/threads', 'ThreadsController@store')->middleware('must-be-confirmed');
 Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy');
 Route::get('threads/{channel}', 'ThreadsController@index');
 
@@ -48,6 +50,13 @@ Route::get('/profiles/{user}', 'ProfilesController@show')->name('profile');
 //User Notifications
 Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
+
+// Confirm User Email Address on registration
+Route::get('/register/confirm', 'Auth\RegisterConfirmationController@index')->name('register.confirm');
+
+
+
+
 
 // API
 
