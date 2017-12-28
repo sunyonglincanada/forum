@@ -50,7 +50,7 @@ class Thread extends Model
 
     public function path()
     {
-        return "/threads/{$this->channel->slug}/{$this->id}";
+        return "/threads/{$this->channel->slug}/{$this->slug}";
     }
 
     // [Eric] bug fix: General error: 25 bind or column index out of range due to withCount('favorites')
@@ -168,5 +168,55 @@ class Thread extends Model
         $key = $user->visitedThreadCacheKey($this);
 
         return $this->updated_at > cache($key);
+    }
+
+    /**
+     * Get the route key name
+     * @return string
+     *
+     * @author Eric
+     * @date 2017-12-28
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
+     * Set the proper slug attribute
+     * @param $value
+     *
+     * @author Eric
+     * @date 2017-12-28
+     */
+    public function setSlugAttribute($value)
+    {
+        if( static::whereSlug( $slug = str_slug($value) )->exists() ) {
+
+            $slug = $this->incrementSlug($slug);
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
+
+    /**
+     * Increment a slug's suffix (when there is same slug name, add slash plus number to slug suffix)
+     * @param $slug
+     * @return mixed|string
+     *
+     * @author Eric
+     * @date 2017-12-28
+     */
+    public function incrementSlug($slug)
+    {
+        $max = static::whereTitle($this->title)->latest('id')->value('slug');
+
+        if( is_numeric($max[-1]) ) {
+            return preg_replace_callback('/(\d+)$/', function ($matches) {
+                return $matches[1] + 1;
+            }, $max);
+        }
+
+        return "{$slug}-2";
     }
 }
