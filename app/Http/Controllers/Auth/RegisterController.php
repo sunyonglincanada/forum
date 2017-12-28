@@ -65,11 +65,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // [Eric] bug fix: Symfony\Component\Debug\Exception\FatalThrowableError: Type error: Argument 1 passed to Illuminate\Auth\SessionGuard::login() must implement interface Illuminate\Contracts\Auth\Authenticatable, null given, called in /home/vagrant/Code/forum/vendor/laravel/framework/src/Illuminate/Foundation/Auth/RegistersUsers.php on line 35     this function must have a return value otherwise error above occurred.
+
         return User::forceCreate([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'confirmation_token' => str_random(25)
+            'confirmation_token' => str_limit(md5($data['email'] . str_random()), 25, '')
         ]);
     }
 
