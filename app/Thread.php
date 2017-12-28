@@ -46,6 +46,13 @@ class Thread extends Model
         static::addGlobalScope('creator', function($builder){
             $builder->withCount('creator');
         });
+
+
+        static::created(function ($thread) {
+            $thread->update([
+                'slug'  => $thread->title
+            ]);
+        });
     }
 
     public function path()
@@ -193,14 +200,14 @@ class Thread extends Model
     {
         if( static::whereSlug( $slug = str_slug($value) )->exists() ) {
 
-            $slug = $this->incrementSlug($slug);
+            $slug = "{$slug}-{$this->id}";
         }
 
         $this->attributes['slug'] = $slug;
     }
 
     /**
-     * Increment a slug's suffix (when there is same slug name, add slash plus number to slug suffix)
+     * Increment a slug's suffix (when there is same slug name, add slash plus number to slug suffix) (deprecated)
      * @param $slug
      * @return mixed|string
      *
