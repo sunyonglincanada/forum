@@ -114,5 +114,17 @@ class Reply extends Model
         );
     }
 
+    /**
+     * Determine if the current reply is marked as the best.
+     * @return bool
+     *
+     * @author Eric
+     * @date 2017-12-29
+     */
+    public function isBest()
+    {
+        return $this->thread->best_reply_id == $this->id;
+    }
+
 
 }

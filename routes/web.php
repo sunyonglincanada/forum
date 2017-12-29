@@ -53,6 +53,8 @@ Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotification
 // Confirm User Email Address on registration
 Route::get('/register/confirm', 'Auth\RegisterConfirmationController@index')->name('register.confirm');
 
+// Mark the best reply for a thread
+Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('best-replies.store');
 
 
 

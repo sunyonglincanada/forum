@@ -226,4 +226,16 @@ class Thread extends Model
 
         return "{$slug}-2";
     }
+
+    /**
+     * Mark the given reply as the best answer.
+     * @param Reply $reply
+     *
+     * @author Eric
+     * @date 2017-12-29
+     */
+    public function markBestReply(Reply $reply)
+    {
+        $this->update(['best_reply_id'  => $reply->id]);
+    }
 }
