@@ -36,12 +36,6 @@
             };
         },
 
-        computed: {
-            signedIn() {
-                return window.App.signedIn;
-            }
-        },
-
         mounted() {
             // username autocomplete
             $('#body').atwho({

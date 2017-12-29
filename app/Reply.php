@@ -18,7 +18,7 @@ class Reply extends Model
      * The accessors to append to the model's array form
      * @var array
      */
-    protected $appends = ['favoritesCount', 'isFavorited'];
+    protected $appends = ['favoritesCount', 'isFavorited', 'isBest'];
 
     /**
      * Boot the reply instance
@@ -124,6 +124,18 @@ class Reply extends Model
     public function isBest()
     {
         return $this->thread->best_reply_id == $this->id;
+    }
+
+    /**
+     * Determine if the current reply is marked as the best answer.
+     * @return bool
+     *
+     * @author Eric
+     * @date 2017-12-29
+     */
+    public function getIsBestAttribute()
+    {
+        return $this->isBest();
     }
 
 
