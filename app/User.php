@@ -141,4 +141,16 @@ class User extends Authenticatable
 
         $this->save();
     }
+
+    /**
+     * Determine the user is administrator or not.
+     * @return bool
+     *
+     * @author Eric
+     * @date 2017-12-31
+     */
+    public function isAdmin()
+    {
+        return in_array($this->name, ['JohnDoe', 'JaneDoe']);
+    }
 }

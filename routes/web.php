@@ -56,7 +56,8 @@ Route::get('/register/confirm', 'Auth\RegisterConfirmationController@index')->na
 // Mark the best reply for a thread
 Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('best-replies.store');
 
-
+// An administrator can lock the thread
+Route::post('locked-threads/{thread}', 'LockedThreadsController@store')->name('locked-threads.store')->middleware('admin');
 
 
 // API

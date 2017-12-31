@@ -238,4 +238,15 @@ class Thread extends Model
     {
         $this->update(['best_reply_id'  => $reply->id]);
     }
+
+    /**
+     * Lock the Thread
+     *
+     * @author Eric
+     * @date 2017-12-31
+     */
+    public function lock()
+    {
+        $this->update(['locked' => true]);
+    }
 }
