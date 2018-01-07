@@ -59934,7 +59934,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             editing: false,
-            id: this.id,
+            id: this.reply.id,
             body: this.reply.body,
             isBest: this.reply.isBest
         };

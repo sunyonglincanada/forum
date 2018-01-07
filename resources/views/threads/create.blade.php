@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section ('head')
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-@endsection
+{{--@section ('head-recaptcha')--}}
+    {{--<script src='https://www.google.com/recaptcha/api.js'></script>--}}
+{{--@endsection--}}
 
 
 @section('content')
@@ -38,7 +38,7 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="g-recaptcha"data-sitekey="6LeXrDUUAAAAAFco7ShbMrJx0fh-ZrLxK9Amd-zP"></div>
+                                <div class="g-recaptcha" data-sitekey="6LeXrDUUAAAAAFco7ShbMrJx0fh-ZrLxK9Amd-zP"></div>
                             </div>
 
                             <div class="form-group">
@@ -59,3 +59,5 @@
         </div>
     </div>
 @endsection
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
