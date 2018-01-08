@@ -60,6 +60,9 @@ Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('best-
 // An administrator can lock the thread
 Route::post('locked-threads/{thread}', 'LockedThreadsController@store')->name('locked-threads.store')->middleware('admin');
 
+// Search
+Route::get('threads/search', 'SearchController@show');
+
 
 // API
 
